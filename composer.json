@@ -1,0 +1,12 @@
+{
+    "require": {
+        "webonyx/graphql-php": "^14.11",
+        "illuminate/database": "^8.70",
+        "phpoffice/phpspreadsheet": "^1.21"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\":"app"
+        }
+    }
+}
