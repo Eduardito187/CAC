@@ -1,5 +1,6 @@
 <?php
 use App\Models\Usuario;
+use App\Models\Persona;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
@@ -25,25 +26,49 @@ $FotoType=new ObjectType([
     ]
 ]);
 
+$TipoDocuementoType=new ObjectType([
+    'name'=>'Objeto TipoDocuemento',
+    'description'=>'Tabla TipoDocuemento',
+    'fields'=>[
+        'ID'=>Type::int(),
+        'Tipo'=>Type::string(),
+        'FechaCreado'=>Type::string(),
+        'FechaActualizado'=>Type::string(),
+        'FechaEliminado'=>Type::string()
+    ]
+]);
+
 $PersonaType=new ObjectType([
     'name'=>'Objeto Persona',
     'description'=>'Tabla Persona',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Nombre'=>Type::string(),
-        'Paterno'=>Type::string(),
-        'Materno'=>Type::string(),
-        'Correo'=>Type::string(),
-        'Telefono'=>Type::string(),
-        'CI'=>Type::string(),
-        'Nacimineto'=>Type::string(),
-        'TipoDocumento'=>Type::int(),
-        'Direccion'=>Type::int(),
-        'Referencia'=>Type::int(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string(),
-    ]
+    'fields'=> function () use(&$TipoDocuementoType){
+        return [
+            'ID'=>Type::int(),
+            'Nombre'=>Type::string(),
+            'Paterno'=>Type::string(),
+            'Materno'=>Type::string(),
+            'Correo'=>Type::string(),
+            'Telefono'=>Type::string(),
+            'CI'=>Type::string(),
+            'Nacimineto'=>Type::string(),
+            'TipoDocumento'=>[
+                "type" => $TipoDocuementoType,
+                "resolve" => function ($root, $args) {
+                    $idPer = $root['ID'];
+                    $obj = Persona::where('ID', $idPer)->with(['tipodocumento'])->first();
+                    if ($obj->tipodocumento==null) {
+                        return null;
+                    }
+                    return $obj->tipodocumento->toArray();
+                }
+            ],
+            'Direccion'=>Type::int(),
+            'Referencia'=>Type::int(),
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string(),
+        ];
+    }
 ]);
 
 $InfoPoliType=new ObjectType([
