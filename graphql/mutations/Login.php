@@ -48,5 +48,5 @@ $Login=[
             return array("estado"=>$v,"id_cuenta"=>$id_cuenta);
         }
     ],
-]
+];
 ?>
