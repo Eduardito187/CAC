@@ -13,8 +13,8 @@ $validacionLoginType=new ObjectType([
 ]);
 
 $FotoType=new ObjectType([
-    'name'=>'Objeto Rango',
-    'description'=>'Tabla Rango',
+    'name'=>'Objeto Foto',
+    'description'=>'Tabla Foto',
     'fields'=>[
         'ID'=>Type::int(),
         'URLPublica'=>Type::string(),
@@ -26,8 +26,8 @@ $FotoType=new ObjectType([
 ]);
 
 $PersonaType=new ObjectType([
-    'name'=>'Objeto Rango',
-    'description'=>'Tabla Rango',
+    'name'=>'Objeto Persona',
+    'description'=>'Tabla Persona',
     'fields'=>[
         'ID'=>Type::int(),
         'Nombre'=>Type::string(),
@@ -47,8 +47,8 @@ $PersonaType=new ObjectType([
 ]);
 
 $InfoPoliType=new ObjectType([
-    'name'=>'Objeto Rango',
-    'description'=>'Tabla Rango',
+    'name'=>'Objeto InfoPoli',
+    'description'=>'Tabla InfoPoli',
     'fields'=>[
         'ID'=>Type::int(),
         'Rango'=>Type::string(),
