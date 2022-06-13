@@ -15,6 +15,7 @@ $rootQuery=new ObjectType([
                 return $Usuario;
             }
         ],
+        
     ]
 ]);
 ?>
