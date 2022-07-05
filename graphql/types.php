@@ -5,7 +5,7 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
 $validacionLoginType=new ObjectType([
-    'name' => 'Validacion de Login',
+    'name' => 'Validacion_de_Login',
     'description' => 'Se valida el inicio al sistema',
     'fields'=>[
         'estado'=>Type::boolean(),
@@ -14,7 +14,7 @@ $validacionLoginType=new ObjectType([
 ]);
 
 $UsuarioType=new ObjectType([
-    'name'=>'Objeto Usuario',
+    'name'=>'Objeto_Usuario',
     'description'=>'Tabla Usuario',
     'fields' => function () use(&$RangoUsuario_TYPE){
         return [
@@ -77,7 +77,7 @@ $RangoUsuario_TYPE=new ObjectType([
 ]);
 
 $RangoType=new ObjectType([
-    'name'=>'Objeto Rango',
+    'name'=>'Objeto_Rango',
     'description'=>'Tabla Rango',
     'fields'=>[
         'ID'=>Type::int(),
