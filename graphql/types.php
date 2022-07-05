@@ -4,6 +4,7 @@ use App\Models\RangoUsuario;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
+
 $validacionLoginType=new ObjectType([
     'name' => 'Validacion_de_Login',
     'description' => 'Se valida el inicio al sistema',
