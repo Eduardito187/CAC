@@ -77,8 +77,8 @@ $RangoUsuario_TYPE=new ObjectType([
 ]);
 
 $RangoType=new ObjectType([
-    'name'=>'Objeto Usuario',
-    'description'=>'Tabla Usuario',
+    'name'=>'Objeto Rango',
+    'description'=>'Tabla Rango',
     'fields'=>[
         'ID'=>Type::int(),
         'Rango'=>Type::string(),
