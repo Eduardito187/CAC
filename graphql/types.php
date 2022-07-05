@@ -13,20 +13,73 @@ $validacionLoginType=new ObjectType([
     ]
 ]);
 
+$POLICIA_Type=new ObjectType([
+    'name' => 'POLICIA_Type',
+    'description' => 'DATA POLICIA',
+    'fields'=>[
+        'ID'=>Type::int(),
+        'Nombre'=>Type::string(),
+        'Paterno'=>Type::string(),
+        'Materno'=>Type::string(),
+        'Correo'=>Type::string(),
+        'Telefono'=>Type::string(),
+        'CI'=>Type::string(),
+        'Nacimiento'=>Type::string(),
+        'FechaCreado'=>Type::string(),
+        'FechaActualizado'=>Type::string(),
+        'FechaEliminado'=>Type::string()
+    ]
+]);
+
+$FOTO_Type=new ObjectType([
+    'name' => 'FOTO_Type',
+    'description' => 'DATA FOTO',
+    'fields'=>[
+        'ID'=>Type::int(),
+        'URL'=>Type::string(),
+        'Direcicon'=>Type::string(),
+        'Formato'=>Type::string(),
+        'Peso'=>Type::string(),
+        'FechaCreado'=>Type::string(),
+        'FechaActualizado'=>Type::string(),
+        'FechaEliminado'=>Type::string()
+    ]
+]);
+
 $UsuarioType=new ObjectType([
     'name'=>'Objeto_Usuario',
     'description'=>'Tabla Usuario',
-    'fields' => function () use(&$RangoUsuario_TYPE){
+    'fields' => function () use(&$RangoUsuario_TYPE,&$FOTO_Type,&$POLICIA_Type){
         return [
             'ID'=>Type::int(),
             'Usuario'=>Type::string(),
             'Pwd'=>Type::string(),
-            'Policia'=>Type::int(),
-            'Foto'=>Type::int(),
+            'Policia'=>[
+                "type" => $POLICIA_Type,
+                "resolve" => function ($root, $args) {
+                    $idPer = $root['ID'];
+                    $data = Usuario::where('ID', $idPer)->with(['policia'])->first();
+                    if ($data->policia==null) {
+                        return null;
+                    }
+                    return $data->policia->toArray();
+                }
+            ],
+            'Foto'=>[
+                "type" => $FOTO_Type,
+                "resolve" => function ($root, $args) {
+                    $idPer = $root['ID'];
+                    $data = Usuario::where('ID', $idPer)->with(['foto'])->first();
+                    if ($data->foto==null) {
+                        return null;
+                    }
+                    return $data->foto->toArray();
+                }
+            ],
             'FechaCreado'=>Type::string(),
             'FechaActualizado'=>Type::string(),
             'FechaEliminado'=>Type::string(),
-            'Rango'=>[
+            'Rangos'=>[
                 "type" => Type::listOf($RangoUsuario_TYPE),
                 "resolve" => function ($root, $args) {
                     $idPer = $root['ID'];
