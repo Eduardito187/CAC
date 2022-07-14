@@ -9,5 +9,8 @@ class Tamanho extends Model{
     public function tamanho_r(){
         return $this->hasOne(Can::class,'Tamanho','ID');
     }
+    public function tamanhoS_r(){
+        return $this->hasMany(Can::class,'Tamanho','ID');
+    }
 }
 ?>

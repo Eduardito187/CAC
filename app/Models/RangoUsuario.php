@@ -7,10 +7,10 @@ class RangoUsuario extends Model{
     protected $table="rango_usuario";
     public $timestamps=false;
     protected $fillable = ['ID','Rango','Usuario','FechaCreado','FechaActualizado','FechaEliminado'];
-    public function usuario(){
+    public function usuario_r(){
         return $this->hasOne(Usuario::class,'ID','Usuario');
     }
-    public function rango(){
+    public function rango_r(){
         return $this->hasOne(Rango::class,'ID','Rango');
     }
 }
