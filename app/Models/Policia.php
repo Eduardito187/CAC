@@ -10,4 +10,5 @@ class Policia extends Model{
         return $this->hasOne(Usuario::class,'Policia','ID');
     }
 }
+
 ?>
