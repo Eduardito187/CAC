@@ -7,7 +7,7 @@ class RangoPermiso extends Model{
     protected $table="rango_permiso";
     public $timestamps=false;
     protected $fillable = ['ID','Rango','Permiso','FechaCreado','FechaActualizado','FechaEliminado'];
-    public function usuario_r(){
+    public function permiso_r(){
         return $this->hasOne(Permiso::class,'ID','Permiso');
     }
     public function rango_r(){
