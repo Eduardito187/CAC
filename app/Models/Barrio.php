@@ -9,5 +9,6 @@ class Barrio extends Model{
     public function direcciones(){
         return $this->hasMany(Direccion::class,'Barrio','ID');
     }
+    
 }
 ?>
