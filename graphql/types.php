@@ -46,21 +46,80 @@ $validacionLoginType=new ObjectType([
 $RangoType=new ObjectType([
     'name'=>'Objeto_Rango',
     'description'=>'Tabla Rango',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Rango'=>Type::string(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
-    ]
+    'fields' => function () use(&$RangoPermisoType,&$RangoUsuarioType){
+        return [
+            'ID'=>Type::int(),
+            'Rango'=>Type::string(),
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string(),
+            'RangoUsuario' => [
+                "type" => Type::listOf($RangoUsuarioType),
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Rango::where('ID', $ID)->with(['rango_usuario'])->first();
+                    if ($data->rango_usuario==null) {
+                        return null;
+                    }
+                    return $data->rango_usuario->toArray();
+                }
+            ],
+            'RangoPermiso' => [
+                "type" => Type::listOf($RangoPermisoType),
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Rango::where('ID', $ID)->with(['rango_permiso'])->first();
+                    if ($data->rango_permiso==null) {
+                        return null;
+                    }
+                    return $data->rango_permiso->toArray();
+                }
+            ],
+        ];
+    }
 ]);
 $RangoPermisoType=new ObjectType([
     'name'=>'RangoPermisoType',
     'description'=>'RangoPermisoType',
+    'fields' => function () use(&$PermisoType,&$RangoType){
+        return [
+            'ID'=>Type::int(),
+            'Rango'=>Type::int(),
+            'Permiso'=>Type::int(),
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string(),
+            'RangoPermiso' => [
+                "type" => $PermisoType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = RangoPermiso::where('ID', $ID)->with(['permiso_r'])->first();
+                    if ($data->permiso_r==null) {
+                        return null;
+                    }
+                    return $data->permiso_r->toArray();
+                }
+            ],
+            'RangoRango' => [
+                "type" => $RangoType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = RangoPermiso::where('ID', $ID)->with(['rango_r'])->first();
+                    if ($data->rango_r==null) {
+                        return null;
+                    }
+                    return $data->rango_r->toArray();
+                }
+            ]
+            ];
+        }
+]);
+$PermisoType=new ObjectType([
+    'name'=>'PermisoType',
+    'description'=>'PermisoType',
     'fields'=>[
         'ID'=>Type::int(),
-        'Rango'=>Type::int(),
-        'Permiso'=>Type::int(),
+        'Permiso'=>Type::string(),
         'FechaCreado'=>Type::string(),
         'FechaActualizado'=>Type::string(),
         'FechaEliminado'=>Type::string()
