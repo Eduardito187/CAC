@@ -5,7 +5,7 @@ use App\Models\Direccion;
 class Canton extends Model{
     protected $table="canton";
     public $timestamps=false;
-    protected $fillable = ['ID','Canton','Foto','FechaCreado','FechaActualizado','FechaEliminado'];
+    protected $fillable = ['ID','Canton','FechaCreado','FechaActualizado','FechaEliminado'];
     public function direcciones(){
         return $this->hasMany(Direccion::class,'Canton','ID');
     }

@@ -6,7 +6,7 @@ use App\Models\Caracteristica;
 class CaracteristicaCan extends Model{
     protected $table="caracteristica_can";
     public $timestamps=false;
-    protected $fillable = ['ID','Can','Caracteristica','Foto','FechaCreado','FechaActualizado','FechaEliminado'];
+    protected $fillable = ['ID','Can','Caracteristica','FechaCreado','FechaActualizado','FechaEliminado'];
     public function can_r(){
         return $this->hasOne(Can::class,'ID','Can');
     }
