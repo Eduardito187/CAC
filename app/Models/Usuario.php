@@ -11,10 +11,10 @@ class Usuario extends Model{
     protected $table="usuario";
     public $timestamps=false;
     protected $fillable = ['ID','Usuario','Pwd','Policia','Foto','Escalafon','Jerarquia','FechaCreado','FechaActualizado','FechaEliminado'];
-    public function policia() {
+    public function policia_r() {
         return $this->hasOne(Policia::class,'ID','Policia');
     }
-    public function foto(){
+    public function foto_r(){
         return $this->hasOne(Foto::class,'ID','Foto');
     }
     public function historial_log(){
