@@ -184,18 +184,86 @@ $TipoDocumentoType=new ObjectType([
 $UsuarioType=new ObjectType([
     'name'=>'UsuarioType',
     'description'=>'UsuarioType',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Usuario'=>Type::string(),
-        'Pwd'=>Type::string(),
-        'Policia'=>Type::int(),
-        'Foto'=>Type::int(),
-        'Escalafon'=>Type::string(),
-        'Jerarquia'=>Type::int(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
-    ]
+    'fields' => function () use(&$PoliciaType,&$FotoType,&$HistorialLogType,&$RangoUsuarioType,&$HistorialActividadType,&$JerarquiaType){
+        return [
+            'ID'=>Type::int(),
+            'Usuario'=>Type::string(),
+            'Pwd'=>Type::string(),
+            'Policia'=>Type::int(),
+            'Foto'=>Type::int(),
+            'Escalafon'=>Type::string(),
+            'Jerarquia'=>Type::int(),
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string(),
+            'PoliciaR' => [
+                "type" => $PoliciaType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Usuario::where('ID', $ID)->with(['policia_r'])->first();
+                    if ($data->policia_r==null) {
+                        return null;
+                    }
+                    return $data->policia_r->toArray();
+                }
+            ],
+            'FotoR' => [
+                "type" => $FotoType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Usuario::where('ID', $ID)->with(['foto_r'])->first();
+                    if ($data->foto_r==null) {
+                        return null;
+                    }
+                    return $data->foto_r->toArray();
+                }
+            ],
+            'HistorialLog' => [
+                "type" => Type::listOf($HistorialLogType),
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Usuario::where('ID', $ID)->with(['historial_log'])->first();
+                    if ($data->historial_log==null) {
+                        return null;
+                    }
+                    return $data->historial_log->toArray();
+                }
+            ],
+            'RangoUsuario' => [
+                "type" => Type::listOf($RangoUsuarioType),
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Usuario::where('ID', $ID)->with(['rango_usuario'])->first();
+                    if ($data->rango_usuario==null) {
+                        return null;
+                    }
+                    return $data->rango_usuario->toArray();
+                }
+            ],
+            'HistorialActividades' => [
+                "type" => Type::listOf($HistorialActividadType),
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Usuario::where('ID', $ID)->with(['historial_actividades'])->first();
+                    if ($data->historial_actividades==null) {
+                        return null;
+                    }
+                    return $data->historial_actividades->toArray();
+                }
+            ],
+            'JerarquiaR' => [
+                "type" => $JerarquiaType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Usuario::where('ID', $ID)->with(['jerarquia_r'])->first();
+                    if ($data->jerarquia_r==null) {
+                        return null;
+                    }
+                    return $data->jerarquia_r->toArray();
+                }
+            ],
+        ];
+    }
 ]);
 $UvType=new ObjectType([
     'name'=>'UvType',
