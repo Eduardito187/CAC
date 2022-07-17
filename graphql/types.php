@@ -128,14 +128,36 @@ $PermisoType=new ObjectType([
 $RangoUsuarioType=new ObjectType([
     'name'=>'RangoUsuarioType',
     'description'=>'RangoUsuarioType',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Rango'=>Type::int(),
-        'Usuario'=>Type::int(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
-    ]
+    'fields' => function () use(&$RangoType,&$UsuarioType){
+        return [
+            'ID'=>Type::int(),
+            'Rango' => [
+                "type" => Type::listOf($RangoType),
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = RangoUsuario::where('ID', $ID)->with(['rango_r'])->first();
+                    if ($data->rango_r==null) {
+                        return null;
+                    }
+                    return $data->rango_r->toArray();
+                }
+            ],
+            'Usuario' => [
+                "type" => Type::listOf($UsuarioType),
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = RangoUsuario::where('ID', $ID)->with(['usuario_r'])->first();
+                    if ($data->usuario_r==null) {
+                        return null;
+                    }
+                    return $data->usuario_r->toArray();
+                }
+            ],
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string()
+        ];
+    }
 ]);
 $RazaType=new ObjectType([
     'name'=>'RazaType',
@@ -173,7 +195,7 @@ $TipoActividadType=new ObjectType([
 $TipoDocumentoType=new ObjectType([
     'name'=>'TipoDocumentoType',
     'description'=>'TipoDocumentoType',
-    'fields' => function () use($PropietarioType,&$ReferenciaType){
+    'fields' => function () use(&$PropietarioType,&$ReferenciaType){
         return [
             'ID'=>Type::int(),
             'Tipo'=>Type::string(),
