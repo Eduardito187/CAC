@@ -132,7 +132,7 @@ $RangoUsuarioType=new ObjectType([
         return [
             'ID'=>Type::int(),
             'Rango' => [
-                "type" => Type::listOf($RangoType),
+                "type" => $RangoType,
                 "resolve" => function ($root, $args) {
                     $ID = $root['ID'];
                     $data = RangoUsuario::where('ID', $ID)->with(['rango_r'])->first();
@@ -143,7 +143,7 @@ $RangoUsuarioType=new ObjectType([
                 }
             ],
             'Usuario' => [
-                "type" => Type::listOf($UsuarioType),
+                "type" => $UsuarioType,
                 "resolve" => function ($root, $args) {
                     $ID = $root['ID'];
                     $data = RangoUsuario::where('ID', $ID)->with(['usuario_r'])->first();
