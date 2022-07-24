@@ -46,7 +46,26 @@ $rootQuery=new ObjectType([
                 return $Usuario;
             }
         ],
-        
+        'Rango'=>[
+            'type'=>$RangoType,
+            'args'=>[
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $Rango=Rango::find($args["ID"])->toArray();
+                if ($Rango==null) {
+                    return null;
+                }
+                return $Rango;
+            }
+        ],
+        'Rangos'=>[
+            'type'=>Type::listOf($RangoType),
+            'resolve'=>function($root,$args){
+                $Rango=Rango::get()->toArray();
+                return $Rango;
+            }
+        ],
     ]
 ]);
 ?>
