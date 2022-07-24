@@ -46,6 +46,13 @@ $rootQuery=new ObjectType([
                 return $Usuario;
             }
         ],
+        'Usuarios'=>[
+            'type'=>Type::listOf($UsuarioType),
+            'resolve'=>function($root,$args){
+                $Usuario=Usuario::get()->toArray();
+                return $Usuario;
+            }
+        ],
         'Rango'=>[
             'type'=>$RangoType,
             'args'=>[
