@@ -594,4 +594,15 @@ $BarrioType=new ObjectType([
         'FechaEliminado'=>Type::string()
     ]
 ]);
+$SexoType=new ObjectType([
+    'name'=>'SexooType',
+    'description'=>'SexoType',
+    'fields'=>[
+        'ID'=>Type::int(),
+        'Sexo'=>Type::string(),
+        'FechaCreado'=>Type::string(),
+        'FechaActualizado'=>Type::string(),
+        'FechaEliminado'=>Type::string()
+    ]
+]);
 ?>
