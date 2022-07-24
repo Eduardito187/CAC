@@ -7,6 +7,7 @@ use App\Models\Tamanho;
 use App\Models\CaracteristicaCan;
 use App\Models\FotoCan;
 use App\Models\Sexo;
+use App\Models\VacunasCan;
 class Can extends Model{
     protected $table="Can";
     public $timestamps=false;
@@ -28,6 +29,9 @@ class Can extends Model{
     }
     public function Sexo_r(){
         return $this->hasOne(Sexo::class,'ID','Sexo');
+    }
+    public function VacunasCan(){
+        return $this->hasMany(VacunasCan::class,'Can','ID');
     }
     
 }
