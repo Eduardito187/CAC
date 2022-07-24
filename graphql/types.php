@@ -580,7 +580,11 @@ $CanType=new ObjectType([
         'Propietario'=>Type::int(),
         'FechaCreado'=>Type::string(),
         'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
+        'FechaEliminado'=>Type::string(),
+        'Sexo'=>Type::int(),
+        'Color'=>Type::string(),
+        'Chip'=>Type::int(),
+        'Tatuaje'=>Type::int()
     ]
 ]);
 $BarrioType=new ObjectType([
@@ -595,11 +599,35 @@ $BarrioType=new ObjectType([
     ]
 ]);
 $SexoType=new ObjectType([
-    'name'=>'SexooType',
+    'name'=>'SexoType',
     'description'=>'SexoType',
     'fields'=>[
         'ID'=>Type::int(),
         'Sexo'=>Type::string(),
+        'FechaCreado'=>Type::string(),
+        'FechaActualizado'=>Type::string(),
+        'FechaEliminado'=>Type::string()
+    ]
+]);
+$VacunasType=new ObjectType([
+    'name'=>'VacunasType',
+    'description'=>'VacunasType',
+    'fields'=>[
+        'ID'=>Type::int(),
+        'Nombre'=>Type::string(),
+        'Obligatorio'=>Type::int(),
+        'FechaCreado'=>Type::string(),
+        'FechaActualizado'=>Type::string(),
+        'FechaEliminado'=>Type::string()
+    ]
+]);
+$VacunasCanType=new ObjectType([
+    'name'=>'VacunasCanType',
+    'description'=>'VacunasCanType',
+    'fields'=>[
+        'ID'=>Type::int(),
+        'Can'=>Type::int(),
+        'Vacunas'=>Type::int(),
         'FechaCreado'=>Type::string(),
         'FechaActualizado'=>Type::string(),
         'FechaEliminado'=>Type::string()
