@@ -6,10 +6,11 @@ use App\Models\Raza;
 use App\Models\Tamanho;
 use App\Models\CaracteristicaCan;
 use App\Models\FotoCan;
+use App\Models\Sexo;
 class Can extends Model{
     protected $table="Can";
     public $timestamps=false;
-    protected $fillable = ['ID','Nombre','Raza','Tamanho','Meses','Anho','Propietario','FechaCreado','FechaActualizado','FechaEliminado'];
+    protected $fillable = ['ID','Nombre','Raza','Tamanho','Meses','Anho','Propietario','FechaCreado','FechaActualizado','FechaEliminado','Sexo','Color','Chip','Tatuaje'];
     public function can_p(){
         return $this->hasOne(Propietario::class,'ID','Propietario');
     }
@@ -25,5 +26,9 @@ class Can extends Model{
     public function fotos_r(){
         return $this->hasMany(FotoCan::class,'Can','ID');
     }
+    public function Sexo_r(){
+        return $this->hasOne(Sexo::class,'ID','Sexo');
+    }
+    
 }
 ?>
