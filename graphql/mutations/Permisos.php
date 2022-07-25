@@ -65,10 +65,10 @@ $Permisos=[
             Rango::where('ID', $args['ID'])->update([
                 'Nombre' => isset($args["Nombre"])?$args["Nombre"]:$Rango->Nombre
             ]);
+            echo "OK";
             //Todos los permisos
             $Rango_Permisos = RangoPermiso::where("Rango",$Rango->ID)->get();
             //Quitado de permisos
-            print_r($Rango_Permisos);
             foreach ($Rango_Permisos as $item) {
                 if (QuitarFiltros($args["Permisos"], $item->Permiso)==false) {
                     RangoPermiso::where("Rango",$Rango->ID)->where("Permiso",$item->Permiso)->delete();
