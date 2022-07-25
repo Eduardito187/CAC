@@ -73,6 +73,13 @@ $rootQuery=new ObjectType([
                 return $Rango;
             }
         ],
+        'Permisos'=>[
+            'type'=>Type::listOf($PermisoType),
+            'resolve'=>function($root,$args){
+                $Permiso=Permiso::get()->toArray();
+                return $Permiso;
+            }
+        ],
     ]
 ]);
 ?>
