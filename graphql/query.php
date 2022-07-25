@@ -43,8 +43,11 @@ $rootQuery=new ObjectType([
                 'ID'=>Type::nonNull(Type::int())
             ],
             'resolve'=>function($root,$args){
-                $Usuario=Usuario::find($args["ID"])->toArray();
-                return $Usuario;
+                $Usuario=Usuario::find($args["ID"]);
+                if ($Usuario==null) {
+                    return null;
+                }
+                return $Usuario->toArray();
             }
         ],
         'Usuarios'=>[
@@ -60,11 +63,11 @@ $rootQuery=new ObjectType([
                 'ID'=>Type::nonNull(Type::int())
             ],
             'resolve'=>function($root,$args){
-                $Rango=Rango::find($args["ID"])->toArray();
+                $Rango=Rango::find($args["ID"]);
                 if ($Rango==null) {
                     return null;
                 }
-                return $Rango;
+                return $Rango->toArray();
             }
         ],
         'Rangos'=>[
@@ -72,6 +75,19 @@ $rootQuery=new ObjectType([
             'resolve'=>function($root,$args){
                 $Rango=Rango::get()->toArray();
                 return $Rango;
+            }
+        ],
+        'Permiso'=>[
+            'type'=>$PermisoType,
+            'args'=>[
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $Permiso=Rango::find($args["ID"]);
+                if ($Permiso==null) {
+                    return null;
+                }
+                return $Permiso->toArray();
             }
         ],
         'Permisos'=>[
