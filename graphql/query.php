@@ -25,6 +25,7 @@ use App\Models\RangoPermiso;
 use App\Models\RangoUsuario;
 use App\Models\Raza;
 use App\Models\Referencia;
+use App\Models\Sexo;
 use App\Models\Tamanho;
 use App\Models\TipoActividad;
 use App\Models\TipoDocumento;
@@ -78,6 +79,13 @@ $rootQuery=new ObjectType([
             'resolve'=>function($root,$args){
                 $Permiso=Permiso::get()->toArray();
                 return $Permiso;
+            }
+        ],
+        'Sexos'=>[
+            'type'=>Type::listOf($SexoType),
+            'resolve'=>function($root,$args){
+                $Sexo=Sexo::get()->toArray();
+                return $Sexo;
             }
         ],
     ]
