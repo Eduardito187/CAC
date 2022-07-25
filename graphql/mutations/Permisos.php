@@ -63,9 +63,8 @@ $Permisos=[
                 return array("response"=>false);
             }
             Rango::where('ID', $args['ID'])->update([
-                'Nombre' => isset($args["Nombre"])?$args["Nombre"]:$Rango->Nombre
+                'Rango' => isset($args["Nombre"])?$args["Nombre"]:$Rango->Rango
             ]);
-            echo "OK";
             //Todos los permisos
             $Rango_Permisos = RangoPermiso::where("Rango",$Rango->ID)->get();
             //Quitado de permisos
