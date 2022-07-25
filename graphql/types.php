@@ -33,6 +33,13 @@ use App\Models\Zona;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
+$ResponseType=new ObjectType([
+    'name' => 'ResponseType',
+    'description' => 'ResponseType',
+    'fields'=>[
+        'response'=>Type::boolean()
+    ]
+]);
 
 $validacionLoginType=new ObjectType([
     'name' => 'Validacion_de_Login',
