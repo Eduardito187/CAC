@@ -68,9 +68,10 @@ $Permisos=[
             //Todos los permisos
             $Rango_Permisos = RangoPermiso::where("Rango",$Rango->ID)->get();
             //Quitado de permisos
+            print_r($Rango_Permisos);
             foreach ($Rango_Permisos as $item) {
-                if (QuitarFiltros($args["Permisos"], $item->ID)==false) {
-                    RangoPermiso::where("Rango",$Rango->ID)->where("Permiso",$item->ID)->delete();
+                if (QuitarFiltros($args["Permisos"], $item->Permiso)==false) {
+                    RangoPermiso::where("Rango",$Rango->ID)->where("Permiso",$item->Permiso)->delete();
                 }
             }
             //Agregado de Permisos
