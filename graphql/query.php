@@ -1,5 +1,5 @@
 <?php
-
+use App\Helper\Bitacora;
 use App\Models\Barrio;
 use App\Models\Can;
 use App\Models\Canton;
@@ -40,9 +40,16 @@ $rootQuery=new ObjectType([
         'Usuario'=>[
             'type'=>$UsuarioType,
             'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
                 'ID'=>Type::nonNull(Type::int())
             ],
             'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return array("response"=>false);
+                }
+
                 $Usuario=Usuario::find($args["ID"]);
                 if ($Usuario==null) {
                     return null;
@@ -52,7 +59,16 @@ $rootQuery=new ObjectType([
         ],
         'Usuarios'=>[
             'type'=>Type::listOf($UsuarioType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
             'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return array("response"=>false);
+                }
+
                 $Usuario=Usuario::get()->toArray();
                 return $Usuario;
             }
@@ -60,9 +76,16 @@ $rootQuery=new ObjectType([
         'Rango'=>[
             'type'=>$RangoType,
             'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
                 'ID'=>Type::nonNull(Type::int())
             ],
             'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return array("response"=>false);
+                }
+
                 $Rango=Rango::find($args["ID"]);
                 if ($Rango==null) {
                     return null;
@@ -72,7 +95,16 @@ $rootQuery=new ObjectType([
         ],
         'Rangos'=>[
             'type'=>Type::listOf($RangoType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
             'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return array("response"=>false);
+                }
+
                 $Rango=Rango::get()->toArray();
                 return $Rango;
             }
@@ -80,9 +112,16 @@ $rootQuery=new ObjectType([
         'Permiso'=>[
             'type'=>$PermisoType,
             'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
                 'ID'=>Type::nonNull(Type::int())
             ],
             'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return array("response"=>false);
+                }
+
                 $Permiso=Rango::find($args["ID"]);
                 if ($Permiso==null) {
                     return null;
@@ -92,14 +131,32 @@ $rootQuery=new ObjectType([
         ],
         'Permisos'=>[
             'type'=>Type::listOf($PermisoType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
             'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return array("response"=>false);
+                }
+
                 $Permiso=Permiso::get()->toArray();
                 return $Permiso;
             }
         ],
         'Sexos'=>[
             'type'=>Type::listOf($SexoType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
             'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return array("response"=>false);
+                }
+
                 $Sexo=Sexo::get()->toArray();
                 return $Sexo;
             }

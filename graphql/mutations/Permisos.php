@@ -4,24 +4,23 @@ use App\Models\RangoUsuario;
 use App\Models\RangoPermiso;
 use App\Models\Permiso;
 use GraphQL\Type\Definition\Type;
-
-function QuitarFiltros($api,$ID){
-    foreach ($api as $item) {
-        if ($item==$ID) {
-            return true;
-        }
-    }
-    return false;
-}
+use App\Helper\Bitacora;
 
 $Permisos=[
     'SetRangos'=>[
         'type'=>$ResponseType,
         'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
             'Nombre'=>Type::nonNull(Type::string()),
             'Permisos'=>Type::nonNull(Type::listOf(Type::int()))
         ],
         'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+
             $fecha=date("Y-m-d h:i:s");
             $Rango=new Rango([
                 'ID'=>NULL,
@@ -52,11 +51,18 @@ $Permisos=[
     'EditRangos'=>[
         'type'=>$ResponseType,
         'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
             'ID'=>Type::nonNull(Type::int()),
             'Nombre'=>Type::nonNull(Type::string()),
             'Permisos'=>Type::nonNull(Type::listOf(Type::int()))
         ],
         'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+
             $Rango=Rango::find($args["ID"]);
             //No existe
             if ($Rango==null) {
@@ -69,7 +75,7 @@ $Permisos=[
             $Rango_Permisos = RangoPermiso::where("Rango",$Rango->ID)->get();
             //Quitado de permisos
             foreach ($Rango_Permisos as $item) {
-                if (QuitarFiltros($args["Permisos"], $item->Permiso)==false) {
+                if ($bitacora->QuitarFiltros($args["Permisos"], $item->Permiso)==false) {
                     RangoPermiso::where("Rango",$Rango->ID)->where("Permiso",$item->Permiso)->delete();
                 }
             }
@@ -95,9 +101,16 @@ $Permisos=[
     'SetPermiso'=>[
         'type'=>$ResponseType,
         'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
             'Permiso'=>Type::nonNull(Type::string())
         ],
         'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+            
             $fecha=date("Y-m-d h:i:s");
             $Permiso=new Permiso([
                 'ID'=>NULL,
