@@ -246,6 +246,7 @@ $UsuarioType=new ObjectType([
             'Foto'=>Type::int(),
             'Escalafon'=>Type::string(),
             'Jerarquia'=>Type::int(),
+            'Estado'=>Type::boolean(),
             'FechaCreado'=>Type::string(),
             'FechaActualizado'=>Type::string(),
             'FechaEliminado'=>Type::string(),

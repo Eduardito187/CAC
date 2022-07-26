@@ -47,7 +47,7 @@ $rootQuery=new ObjectType([
                 $bitacora = new Bitacora();
                 $bitacora->SetIdUser($args["ID_CUENTA"]);
                 if ($bitacora->ValidarUserAPI()==false) {
-                    return array("response"=>false);
+                    return null;
                 }
 
                 $Usuario=Usuario::find($args["ID"]);
@@ -66,7 +66,7 @@ $rootQuery=new ObjectType([
                 $bitacora = new Bitacora();
                 $bitacora->SetIdUser($args["ID_CUENTA"]);
                 if ($bitacora->ValidarUserAPI()==false) {
-                    return array("response"=>false);
+                    return null;
                 }
 
                 $Usuario=Usuario::get()->toArray();
@@ -83,7 +83,7 @@ $rootQuery=new ObjectType([
                 $bitacora = new Bitacora();
                 $bitacora->SetIdUser($args["ID_CUENTA"]);
                 if ($bitacora->ValidarUserAPI()==false) {
-                    return array("response"=>false);
+                    return null;
                 }
 
                 $Rango=Rango::find($args["ID"]);
@@ -102,7 +102,7 @@ $rootQuery=new ObjectType([
                 $bitacora = new Bitacora();
                 $bitacora->SetIdUser($args["ID_CUENTA"]);
                 if ($bitacora->ValidarUserAPI()==false) {
-                    return array("response"=>false);
+                    return null;
                 }
 
                 $Rango=Rango::get()->toArray();
@@ -119,7 +119,7 @@ $rootQuery=new ObjectType([
                 $bitacora = new Bitacora();
                 $bitacora->SetIdUser($args["ID_CUENTA"]);
                 if ($bitacora->ValidarUserAPI()==false) {
-                    return array("response"=>false);
+                    return null;
                 }
 
                 $Permiso=Rango::find($args["ID"]);
@@ -138,7 +138,7 @@ $rootQuery=new ObjectType([
                 $bitacora = new Bitacora();
                 $bitacora->SetIdUser($args["ID_CUENTA"]);
                 if ($bitacora->ValidarUserAPI()==false) {
-                    return array("response"=>false);
+                    return null;
                 }
 
                 $Permiso=Permiso::get()->toArray();
@@ -154,7 +154,7 @@ $rootQuery=new ObjectType([
                 $bitacora = new Bitacora();
                 $bitacora->SetIdUser($args["ID_CUENTA"]);
                 if ($bitacora->ValidarUserAPI()==false) {
-                    return array("response"=>false);
+                    return null;
                 }
 
                 $Sexo=Sexo::get()->toArray();

@@ -10,7 +10,7 @@ use App\Models\HistorialActividad;
 class Usuario extends Model{
     protected $table="usuario";
     public $timestamps=false;
-    protected $fillable = ['ID','Usuario','Pwd','Policia','Foto','Escalafon','Jerarquia','FechaCreado','FechaActualizado','FechaEliminado'];
+    protected $fillable = ['ID','Usuario','Pwd','Policia','Foto','Escalafon','Jerarquia','Estado','FechaCreado','FechaActualizado','FechaEliminado'];
     public function policia_r() {
         return $this->hasOne(Policia::class,'ID','Policia');
     }
