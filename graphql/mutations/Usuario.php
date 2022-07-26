@@ -5,6 +5,67 @@ use GraphQL\Type\Definition\Type;
 use App\Helper\Bitacora;
 
 $Usuario=[
+    'CreateUsuario'=>[
+        'type'=>$ResponseType,
+        'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
+            'Usuario'=>Type::nonNull(Type::string()),
+            'Pwd'=>Type::nonNull(Type::string()),
+            'Escalafon'=>Type::nonNull(Type::string()),
+            'Jerarquia'=>Type::nonNull(Type::int()),
+            'Nombre'=>Type::nonNull(Type::string()),
+            'Paterno'=>Type::nonNull(Type::string()),
+            'Materno'=>Type::nonNull(Type::string()),
+            'Correo'=>Type::nonNull(Type::string()),
+            'Telefono'=>Type::nonNull(Type::string()),
+            'CI'=>Type::nonNull(Type::string()),
+            'Nacimiento'=>Type::nonNull(Type::string())
+        ],
+        'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+            
+            $poli=new Policia([
+                'ID'=>NULL,
+                'Nombre'=>$args["Nombre"],
+                'Paterno'=>$args["Paterno"],
+                'Materno'=>$args["Materno"],
+                'Correo'=>$args["Correo"],
+                'Telefono'=>$args["Telefono"],
+                'CI'=>$args["CI"],
+                'Nacimiento'=>$args["Nacimiento"],
+                'FechaCreado'=>date("Y-m-d h:i:s"),
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL
+            ]);
+            $x=$poli->save();
+
+            $New_Policia = Policia::where("CI",$args["CI"])->first();
+            if ($New_Policia==null) {
+                return array("response"=>false);
+            }
+
+            $user=new Usuario([
+                'ID'=>NULL,
+                'Usuario'=>$args["Usuario"],
+                'Pwd'=>$args["Pwd"],
+                'Policia'=>$New_Policia->ID,
+                'Foto'=>1,
+                'Escalafon'=>$args["Escalafon"],
+                'Jerarquia'=>$args["Jerarquia"],
+                'Estado'=>1,
+                'FechaCreado'=>date("Y-m-d h:i:s"),
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL
+            ]);
+            $x=$user->save();
+
+            return array("response"=>true);
+        }
+    ],
     'UpdateUsuario'=>[
         'type'=>$ResponseType,
         'args'=>[
