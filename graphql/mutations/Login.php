@@ -18,16 +18,17 @@ $Login=[
             $id_cuenta=0;
             if ($cuenta!=null) {
                 $id_cuenta=$cuenta->ID;
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($id_cuenta);
                 if ($cuenta->Pwd==$pwd) {
                     $v=true;
                 }
-                $bitacora = new Bitacora();
-                $bitacora->SetBitacora($id_cuenta,$v);
+                $bitacora->SetHistorial($v);
                 if ($v==false) {
                     $id_cuenta=0;
                 }
             }
-            
+
             return array("estado"=>$v,"id_cuenta"=>$id_cuenta);
         }
     ],
