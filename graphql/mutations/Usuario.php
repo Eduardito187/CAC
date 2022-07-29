@@ -75,8 +75,7 @@ $Usuario=[
             'Paterno'=>Type::nonNull(Type::string()),
             'Materno'=>Type::nonNull(Type::string()),
             'Correo'=>Type::nonNull(Type::string()),
-            'Telefono'=>Type::nonNull(Type::string()),
-            'CI'=>Type::nonNull(Type::string())
+            'Telefono'=>Type::nonNull(Type::string())
         ],
         'resolve'=>function($root,$args){
             $bitacora = new Bitacora();
@@ -95,7 +94,6 @@ $Usuario=[
                 'Materno'=>$args["Materno"],
                 'Correo'=>$args["Correo"],
                 'Telefono'=>$args["Telefono"],
-                'CI'=>$args["CI"],
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
             return array("response"=>true);
