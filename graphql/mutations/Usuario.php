@@ -98,6 +98,7 @@ $Usuario=[
                 'CI'=>$args["CI"],
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
+            return array("response"=>true);
         }
     ],
     'DisableUsuario'=>[
@@ -122,6 +123,7 @@ $Usuario=[
                 'Estado'=>$args["Estado"],
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
+            return array("response"=>true);
         }
     ],
     'ChangePwdUsuario'=>[
@@ -146,6 +148,7 @@ $Usuario=[
                 'Pwd'=>$args["Pwd"],
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
+            return array("response"=>true);
         }
     ],
 ];
