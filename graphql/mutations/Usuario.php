@@ -124,7 +124,7 @@ $Usuario=[
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
             return array("response"=>true);
-            
+
         }
     ],
     'ChangePwdUsuario'=>[
@@ -147,6 +147,31 @@ $Usuario=[
             }
             Usuario::where('ID', $Usuario->ID)->update([
                 'Pwd'=>$args["Pwd"],
+                'FechaActualizado'=>date("Y-m-d h:i:s")
+            ]);
+            return array("response"=>true);
+        }
+    ],
+    'ActualizarJerarquia'=>[
+        'type'=>$ResponseType,
+        'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
+            'ID'=>Type::nonNull(Type::int()),
+            'Jerarquia'=>Type::nonNull(Type::int())
+        ],
+        'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+
+            $Usuario=Usuario::find($args["ID"]);
+            if ($Usuario==null) {
+                return array("response"=>false);
+            }
+            Usuario::where('ID', $Usuario->ID)->update([
+                'Jerarquia'=>$args["Jerarquia"],
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
             return array("response"=>true);
