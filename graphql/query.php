@@ -50,6 +50,8 @@ $rootQuery=new ObjectType([
                     return null;
                 }
 
+
+
                 $Usuario=Usuario::find($args["ID"]);
                 if ($Usuario==null) {
                     return null;
@@ -71,6 +73,22 @@ $rootQuery=new ObjectType([
 
                 $Usuario=Usuario::get()->toArray();
                 return $Usuario;
+            }
+        ],
+        'Jerarquias'=>[
+            'type'=>Type::listOf($JerarquiaType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Jerarquia=Jerarquia::get()->toArray();
+                return $Jerarquia;
             }
         ],
         'Rango'=>[
