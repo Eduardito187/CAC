@@ -124,6 +124,7 @@ $Usuario=[
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
             return array("response"=>true);
+            
         }
     ],
     'ChangePwdUsuario'=>[
