@@ -1,5 +1,6 @@
 <?php
 use App\Models\Rango;
+use App\Models\Usuario;
 use App\Models\RangoUsuario;
 use App\Models\RangoPermiso;
 use App\Models\Permiso;
@@ -120,6 +121,52 @@ $Permisos=[
                 'FechaEliminado'=>NULL
             ]);
             $x=$Permiso->save();
+            return array("response"=>true);
+        }
+    ],
+    'EditRolesUsers'=>[
+        'type'=>$ResponseType,
+        'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
+            'ID'=>Type::nonNull(Type::int()),
+            'Roles'=>Type::nonNull(Type::listOf(Type::int()))
+        ],
+        'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+
+            $Usuario=Usuario::find($args["ID"]);
+            //No existe
+            if ($Usuario==null) {
+                return array("response"=>false);
+            }
+            //Todos los permisos
+            $Usuario_Roles = RangoUsuario::where("Usuario",$Usuario->ID)->get();
+            //Quitado de permisos
+            foreach ($Usuario_Roles as $item) {
+                if ($bitacora->QuitarFiltros($args["Roles"], $item->Permiso)==false) {
+                    RangoUsuario::where("Usuario",$Usuario->ID)->where("Rango",$item->Rango)->delete();
+                }
+            }
+            //Agregado de Permisos
+            foreach ($args["Roles"] as $r_p) {
+                $Rango_Permiso = RangoUsuario::where("Usuario",$Usuario->ID)->where("Rango",$r_p)->first();
+                if ($Rango_Permiso==null) {
+                    $Rango_P=new RangoUsuario([
+                        'ID'=>NULL,
+                        'Rango'=>$r_p,
+                        'Usuario'=>$Usuario->ID,
+                        'FechaCreado'=>date("Y-m-d h:i:s"),
+                        'FechaActualizado'=>NULL,
+                        'FechaEliminado'=>NULL
+                    ]);
+                    $x=$Rango_P->save();
+                }
+            }
+            //Operacion Exitosa
             return array("response"=>true);
         }
     ],
