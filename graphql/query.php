@@ -215,6 +215,7 @@ $rootQuery=new ObjectType([
                 return $Sexo;
             }
         ],
+        
     ]
 ]);
 ?>
