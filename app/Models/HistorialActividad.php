@@ -7,7 +7,7 @@ class HistorialActividad extends Model{
     protected $table="historial_actividad";
     public $timestamps=false;
     protected $fillable = ['ID','Actividad','Usuario','Glosa','FechaCreado','FechaActualizado','FechaEliminado'];
-    public function historial_actividades(){
+    public function usuario_r(){
         return $this->hasOne(Usuario::class,'ID','Usuario');
     }
     public function tipo_actividad(){

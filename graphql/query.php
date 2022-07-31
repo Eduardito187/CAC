@@ -163,6 +163,42 @@ $rootQuery=new ObjectType([
                 return $Permiso;
             }
         ],
+        'HistorialActividades'=>[
+            'type'=>Type::listOf($PermisoType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $HistorialActividad=HistorialActividad::get()->toArray();
+                return $HistorialActividad;
+            }
+        ],
+        'HistorialActividad'=>[
+            'type'=>$PermisoType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $HistorialActividad=HistorialActividad::find($args["ID"]);
+                if ($HistorialActividad==null) {
+                    return null;
+                }
+                return $HistorialActividad->toArray();
+            }
+        ],
         'Sexos'=>[
             'type'=>Type::listOf($SexoType),
             'args'=>[
@@ -179,6 +215,7 @@ $rootQuery=new ObjectType([
                 return $Sexo;
             }
         ],
+        
     ]
 ]);
 ?>
