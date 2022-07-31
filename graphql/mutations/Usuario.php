@@ -179,8 +179,7 @@ $Usuario=[
         'type'=>$ResponseType,
         'args'=>[
             'ID_CUENTA'=>Type::nonNull(Type::int()),
-            'ID'=>Type::nonNull(Type::int()),
-            'Estado'=>Type::nonNull(Type::boolean())
+            'ID'=>Type::nonNull(Type::int())
         ],
         'resolve'=>function($root,$args){
             $bitacora = new Bitacora();
@@ -194,7 +193,6 @@ $Usuario=[
                 return array("response"=>false);
             }
             Usuario::where('ID', $Usuario->ID)->update([
-                'Estado'=>$args["Estado"],
                 'FechaEliminado'=>date("Y-m-d h:i:s")
             ]);
             return array("response"=>true);
