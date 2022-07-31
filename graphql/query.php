@@ -164,7 +164,7 @@ $rootQuery=new ObjectType([
             }
         ],
         'HistorialActividades'=>[
-            'type'=>Type::listOf($PermisoType),
+            'type'=>Type::listOf($HistorialActividadType),
             'args'=>[
                 'ID_CUENTA'=>Type::nonNull(Type::int())
             ],
@@ -180,7 +180,7 @@ $rootQuery=new ObjectType([
             }
         ],
         'HistorialActividad'=>[
-            'type'=>$PermisoType,
+            'type'=>$HistorialActividadType,
             'args'=>[
                 'ID_CUENTA'=>Type::nonNull(Type::int()),
                 'ID'=>Type::nonNull(Type::int())
@@ -215,7 +215,7 @@ $rootQuery=new ObjectType([
                 return $Sexo;
             }
         ],
-        
+
     ]
 ]);
 ?>
