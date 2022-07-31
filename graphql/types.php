@@ -452,15 +452,37 @@ $HistorialLogType=new ObjectType([
 $HistorialActividadType=new ObjectType([
     'name'=>'HistorialActividadType',
     'description'=>'HistorialActividadType',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Actividad'=>Type::int(),
-        'Usuario'=>Type::int(),
-        'Glosa'=>Type::string(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
-    ]
+    'fields' => function () use(&$UsuarioType,&$TipoActividadType){
+        return [
+            'ID'=>Type::int(),
+            'Actividad' => [
+                "type" => $TipoActividadType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = HistorialActividad::where('ID', $ID)->with(['tipo_actividad'])->first();
+                    if ($data->tipo_actividad==null) {
+                        return null;
+                    }
+                    return $data->tipo_actividad->toArray();
+                }
+            ],
+            'Usuario' => [
+                "type" => $UsuarioType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = HistorialActividad::where('ID', $ID)->with(['usuario_r'])->first();
+                    if ($data->usuario_r==null) {
+                        return null;
+                    }
+                    return $data->usuario_r->toArray();
+                }
+            ],
+            'Glosa'=>Type::string(),
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string()
+        ];
+    }
 ]);
 $GeolocalizacionType=new ObjectType([
     'name'=>'GeolocalizacionType',
