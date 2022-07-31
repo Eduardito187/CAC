@@ -175,5 +175,29 @@ $Usuario=[
             return array("response"=>true);
         }
     ],
+    'DeleteUsuario'=>[
+        'type'=>$ResponseType,
+        'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
+            'ID'=>Type::nonNull(Type::int())
+        ],
+        'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+
+            $Usuario=Usuario::find($args["ID"]);
+            if ($Usuario==null) {
+                return array("response"=>false);
+            }
+            Usuario::where('ID', $Usuario->ID)->update([
+                'FechaEliminado'=>date("Y-m-d h:i:s")
+            ]);
+            return array("response"=>true);
+
+        }
+    ],
 ];
 ?>
