@@ -3,6 +3,7 @@ use App\Models\Usuario;
 use App\Models\Policia;
 use GraphQL\Type\Definition\Type;
 use App\Helper\Bitacora;
+use App\Models\RangoUsuario;
 
 $Usuario=[
     'CreateUsuario'=>[
@@ -19,7 +20,8 @@ $Usuario=[
             'Correo'=>Type::nonNull(Type::string()),
             'Telefono'=>Type::nonNull(Type::string()),
             'CI'=>Type::nonNull(Type::string()),
-            'Nacimiento'=>Type::nonNull(Type::string())
+            'Nacimiento'=>Type::nonNull(Type::string()),
+            'Roles'=>Type::nonNull(Type::listOf(Type::int()))
         ],
         'resolve'=>function($root,$args){
             $bitacora = new Bitacora();
@@ -62,6 +64,19 @@ $Usuario=[
                 'FechaEliminado'=>NULL
             ]);
             $x=$user->save();
+            $New_User = Usuario::where("CI",$args["CI"])->first();
+
+            foreach ($args["Roles"] as $r_p) {
+                $Rango_P=new RangoUsuario([
+                    'ID'=>NULL,
+                    'Rango'=>$r_p,
+                    'Usuario'=>$New_User->ID,
+                    'FechaCreado'=>date("Y-m-d h:i:s"),
+                    'FechaActualizado'=>NULL,
+                    'FechaEliminado'=>NULL
+                ]);
+                $x=$Rango_P->save();
+            }
 
             return array("response"=>true);
         }
