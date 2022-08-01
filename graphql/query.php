@@ -49,7 +49,7 @@ $rootQuery=new ObjectType([
                 if ($bitacora->ValidarUserAPI()==false) {
                     return null;
                 }
-
+                $bitacora->SetBitacora(18,"Se obtuvo la informacion del usuario");
 
 
                 $Usuario=Usuario::find($args["ID"]);

@@ -63,7 +63,7 @@ $Permisos=[
             if ($bitacora->ValidarUserAPI()==false) {
                 return array("response"=>false);
             }
-
+            $bitacora->SetBitacora(9,"Se actualizaron los rangos");
             $Rango=Rango::find($args["ID"]);
             //No existe
             if ($Rango==null) {
