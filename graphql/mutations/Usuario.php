@@ -64,7 +64,7 @@ $Usuario=[
                 'FechaEliminado'=>NULL
             ]);
             $x=$user->save();
-            $New_User = Usuario::where("CI",$args["CI"])->first();
+            $New_User = Usuario::where("Policia",$New_Policia->ID)->first();
 
             foreach ($args["Roles"] as $r_p) {
                 $Rango_P=new RangoUsuario([
