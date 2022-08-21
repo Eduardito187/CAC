@@ -31,6 +31,7 @@ use App\Models\TipoActividad;
 use App\Models\TipoDocumento;
 use App\Models\Usuario;
 use App\Models\Uv;
+use App\Models\Vacunas;
 use App\Models\Zona;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
@@ -49,7 +50,7 @@ $rootQuery=new ObjectType([
                 if ($bitacora->ValidarUserAPI()==false) {
                     return null;
                 }
-                $bitacora->SetBitacora(18,"Se obtuvo la informacion del usuario");
+
 
 
                 $Usuario=Usuario::find($args["ID"]);
@@ -213,6 +214,38 @@ $rootQuery=new ObjectType([
 
                 $Sexo=Sexo::get()->toArray();
                 return $Sexo;
+            }
+        ],
+        'Razas'=>[
+            'type'=>Type::listOf($RazaType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $raza = new Raza();
+                $raza->SetIdUser($args["ID_CUENTA"]);
+                if ($raza->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Raza=Raza::get()->toArray();
+                return $Raza;
+            }
+        ],
+        'Vacunas'=>[
+            'type'=>Type::listOf($VacunasType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $vacunas = new Vacunas();
+                $vacunas->SetIdUser($args["ID_CUENTA"]);
+                if ($vacunas->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Vacunas=Vacunas::get()->toArray();
+                return $Vacunas;
             }
         ],
     ]
