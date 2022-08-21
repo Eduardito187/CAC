@@ -287,7 +287,87 @@ $rootQuery=new ObjectType([
                 }
                 return $Vacunas->toArray();
             }
-        ]
+        ],
+        'TipoDocumento'=>[
+            'type'=>Type::listOf($TipoDocumentoType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $TipoDocumento=TipoDocumento::get()->toArray();
+                return $TipoDocumento;
+            }
+        ],
+        'Departamentos'=>[
+            'type'=>Type::listOf($DepartamentoType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Departamento=Departamento::get()->toArray();
+                return $Departamento;
+            }
+        ],
+        'Provincias'=>[
+            'type'=>Type::listOf($ProvinciaType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Provincia=Provincia::get()->toArray();
+                return $Provincia;
+            }
+        ],
+        'Municipios'=>[
+            'type'=>Type::listOf($MunicipioType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Municipio=Municipio::get()->toArray();
+                return $Municipio;
+            }
+        ],
+        'Cantones'=>[
+            'type'=>Type::listOf($CantonType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Canton=Canton::get()->toArray();
+                return $Canton;
+            }
+        ],
     ]
 ]);
 ?>
