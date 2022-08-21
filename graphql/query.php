@@ -222,14 +222,34 @@ $rootQuery=new ObjectType([
                 'ID_CUENTA'=>Type::nonNull(Type::int())
             ],
             'resolve'=>function($root,$args){
-                $raza = new Raza();
-                $raza->SetIdUser($args["ID_CUENTA"]);
-                if ($raza->ValidarUserAPI()==false) {
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
                     return null;
                 }
 
                 $Raza=Raza::get()->toArray();
                 return $Raza;
+            }
+        ],
+        'Raza'=>[
+            'type'=>$RazaType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Raza=Raza::find($args["ID"]);
+                if ($Raza==null) {
+                    return null;
+                }
+                return $Raza->toArray();
             }
         ],
         'Vacunas'=>[
@@ -238,9 +258,9 @@ $rootQuery=new ObjectType([
                 'ID_CUENTA'=>Type::nonNull(Type::int())
             ],
             'resolve'=>function($root,$args){
-                $vacunas = new Vacunas();
-                $vacunas->SetIdUser($args["ID_CUENTA"]);
-                if ($vacunas->ValidarUserAPI()==false) {
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
                     return null;
                 }
 
@@ -248,6 +268,26 @@ $rootQuery=new ObjectType([
                 return $Vacunas;
             }
         ],
+        'Vacuna'=>[
+            'type'=>$VacunasType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Vacunas=Vacunas::find($args["ID"]);
+                if ($Vacunas==null) {
+                    return null;
+                }
+                return $Vacunas->toArray();
+            }
+        ]
     ]
 ]);
 ?>
