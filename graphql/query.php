@@ -368,6 +368,7 @@ $rootQuery=new ObjectType([
                 return $Canton;
             }
         ],
+        
     ]
 ]);
 ?>
