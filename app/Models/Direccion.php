@@ -17,6 +17,9 @@ class Direccion extends Model{
     public function propietario(){
         return $this->hasOne(Propietario::class,'Direccion','ID');
     }
+    public function referencia(){
+        return $this->hasOne(Referencia::class,'Direccion','ID');
+    }
 
     public function zora_r(){
         return $this->hasOne(Zona::class,'ID','Zona');

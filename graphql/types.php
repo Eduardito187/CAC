@@ -362,6 +362,7 @@ $ReferenciaType=new ObjectType([
         'Apellido'=>Type::string(),
         'CI'=>Type::string(),
         'Telefono'=>Type::string(),
+        'Direccion'=>Type::int(),
         'TipoDocumento'=>Type::int(),
         'FechaCreado'=>Type::string(),
         'FechaActualizado'=>Type::string(),
