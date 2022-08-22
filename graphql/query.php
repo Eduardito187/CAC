@@ -368,6 +368,114 @@ $rootQuery=new ObjectType([
                 return $Canton;
             }
         ],
+        'Zonas'=>[
+            'type'=>Type::listOf($ZonaType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Zonas=Zona::get()->toArray();
+                return $Zonas;
+            }
+        ],
+        'Zona'=>[
+            'type'=>$ZonaType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Zona=Zona::find($args["ID"]);
+                if ($Zona==null) {
+                    return null;
+                }
+                return $Zona->toArray();
+            }
+        ],
+        'Barrios'=>[
+            'type'=>Type::listOf($BarrioType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Barrios=Barrio::get()->toArray();
+                return $Barrios;
+            }
+        ],
+        'Barrio'=>[
+            'type'=>$BarrioType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Barrio=Barrio::find($args["ID"]);
+                if ($Barrio==null) {
+                    return null;
+                }
+                return $Barrio->toArray();
+            }
+        ],
+        'UVS'=>[
+            'type'=>Type::listOf($UvType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Uvs=Uv::get()->toArray();
+                return $Uvs;
+            }
+        ],
+        'UV'=>[
+            'type'=>$UvType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Uv=Uv::find($args["ID"]);
+                if ($Uv==null) {
+                    return null;
+                }
+                return $Uv->toArray();
+            }
+        ],
     ]
 ]);
 ?>

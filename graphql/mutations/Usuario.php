@@ -1,6 +1,9 @@
 <?php
 use App\Models\Usuario;
 use App\Models\Policia;
+use App\Models\Referencia;
+use App\Models\Propietario;
+use App\Models\PropietarioReferencia;
 use GraphQL\Type\Definition\Type;
 use App\Helper\Bitacora;
 use App\Models\RangoUsuario;
