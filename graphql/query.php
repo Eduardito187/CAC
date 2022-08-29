@@ -476,7 +476,114 @@ $rootQuery=new ObjectType([
                 return $Uv->toArray();
             }
         ],
-        
+        'Canes'=>[
+            'type'=>Type::listOf($CanType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Data=Can::get()->toArray();
+                return $Data;
+            }
+        ],
+        'Can'=>[
+            'type'=>$CanType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Data=Can::find($args["ID"]);
+                if ($Data==null) {
+                    return null;
+                }
+                return $Data->toArray();
+            }
+        ],
+        'Propietarios'=>[
+            'type'=>Type::listOf($PropietarioType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Data=Propietario::get()->toArray();
+                return $Data;
+            }
+        ],
+        'Propietario'=>[
+            'type'=>$PropietarioType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Data=Propietario::find($args["ID"]);
+                if ($Data==null) {
+                    return null;
+                }
+                return $Data->toArray();
+            }
+        ],
+        'Referencias'=>[
+            'type'=>Type::listOf($ReferenciaType),
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Data=Referencia::get()->toArray();
+                return $Data;
+            }
+        ],
+        'Referencia'=>[
+            'type'=>$ReferenciaType,
+            'args'=>[
+                'ID_CUENTA'=>Type::nonNull(Type::int()),
+                'ID'=>Type::nonNull(Type::int())
+            ],
+            'resolve'=>function($root,$args){
+                $bitacora = new Bitacora();
+                $bitacora->SetIdUser($args["ID_CUENTA"]);
+                if ($bitacora->ValidarUserAPI()==false) {
+                    return null;
+                }
+
+                $Data=Referencia::find($args["ID"]);
+                if ($Data==null) {
+                    return null;
+                }
+                return $Data->toArray();
+            }
+        ],
     ]
 ]);
 ?>
