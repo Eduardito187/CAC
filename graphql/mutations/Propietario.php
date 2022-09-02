@@ -121,7 +121,6 @@ $Propietario=[
                 'FechaEliminado'=>date("Y-m-d h:i:s")
             ]);
             return array("response"=>true);
-
         }
     ],
 ];
