@@ -9,7 +9,7 @@ use App\Models\FotoCan;
 use App\Models\Sexo;
 use App\Models\VacunasCan;
 class Can extends Model{
-    protected $table="Can";
+    protected $table="can";
     public $timestamps=false;
     protected $fillable = ['ID','Nombre','Raza','Tamanho','Meses','Anho','Propietario','FechaCreado','FechaActualizado','FechaEliminado','Sexo','Color','Chip','Tatuaje'];
     public function can_p(){
