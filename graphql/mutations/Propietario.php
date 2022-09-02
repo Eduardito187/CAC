@@ -96,7 +96,6 @@ $Propietario=[
             if ($New_Propietario==null) {
                 return array("response"=>false);
             }
-
             return array("response"=>true);
         }
     ],
