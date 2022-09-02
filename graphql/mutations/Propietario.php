@@ -4,6 +4,7 @@ use App\Models\PropietarioReferencia;
 use App\Models\Direccion;
 use GraphQL\Type\Definition\Type;
 use App\Helper\Bitacora;
+use App\Models\Geolocalizacion;
 
 $Propietario=[
     'CreatePropietario'=>[
@@ -16,17 +17,19 @@ $Propietario=[
             'Numero'=>Type::nonNull(Type::string()),
             'Complemento'=>Type::nonNull(Type::string()),
             'Direccion'=>Type::nonNull(Type::string()),
-            'Zona'=>Type::nonNull(Type::string()),
+            'Zona'=>Type::nonNull(Type::int()),
             'Barrio'=>Type::nonNull(Type::string()),
             'Calle'=>Type::nonNull(Type::string()),
             'NumCasa'=>Type::nonNull(Type::string()),
+            'Uv'=>Type::nonNull(Type::int()),
             'Parentesco'=>Type::nonNull(Type::string()),
             'Telefono'=>Type::nonNull(Type::string()),
             'Departamento'=>Type::nonNull(Type::int()),
             'Provincia'=>Type::nonNull(Type::int()),
             'Municipio'=>Type::nonNull(Type::int()),
-            'Uv'=>Type::nonNull(Type::int()),
-            'Canton'=>Type::nonNull(Type::int())
+            'Canton'=>Type::nonNull(Type::int()),
+            'Latitud'=>Type::nonNull(Type::string()),
+            'Longitud'=>Type::nonNull(Type::string())
         ],
         'resolve'=>function($root,$args){
             $bitacora = new Bitacora();
@@ -36,13 +39,28 @@ $Propietario=[
             }
 
             $hora_DIR = date("Y-m-d h:i:s");
+            $geo = new Geolocalizacion([
+                'ID'=>NULL,
+                'Latitud'=>$args["Latitud"],
+                'Longitud'=>$args["Longitud"],
+                'FechaCreado'=>$hora_DIR,
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL
+            ]);
+            $x=$geo->save();
+
+            $Geo = Geolocalizacion::where("Latitud",$args["Latitud"])->where("Longitud",$args["Longitud"])->where("FechaCreado",$hora_DIR)->first();
+            if ($Geo == null) {
+                return array("response"=>false);
+            }
+
             $dir=new Direccion([
                 'ID'=>NULL,
                 'Zona'=>$args["Zona"],
                 'Barrio'=>$args["Barrio"],
                 'Calle'=>$args["Calle"],
                 'Casa'=>$args["Casa"],
-                'Geo'=>1,
+                'Geo'=>$Geo->ID,
                 'Municipio'=>$args["Municipio"],
                 'Distrito'=>$args["Distrito"],
                 'Uv'=>$args["Uv"],
