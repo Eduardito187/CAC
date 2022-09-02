@@ -51,8 +51,6 @@ $rootQuery=new ObjectType([
                     return null;
                 }
 
-
-
                 $Usuario=Usuario::find($args["ID"]);
                 if ($Usuario==null) {
                     return null;
