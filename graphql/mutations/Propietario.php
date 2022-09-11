@@ -4,11 +4,14 @@ use App\Models\PropietarioReferencia;
 use App\Models\Direccion;
 use GraphQL\Type\Definition\Type;
 use App\Helper\Bitacora;
+use App\Models\Can;
+use App\Models\Caracteristica;
 use App\Models\Geolocalizacion;
+use App\Models\Tamanho;
 
 $Propietario=[
     'CreatePropietario'=>[
-        'type'=>$ResponseType,
+        'type'=>$NumberType,
         'args'=>[
             'ID_CUENTA'=>Type::nonNull(Type::int()),
             'Nombre'=>Type::nonNull(Type::string()),
@@ -36,7 +39,7 @@ $Propietario=[
             $bitacora = new Bitacora();
             $bitacora->SetIdUser($args["ID_CUENTA"]);
             if ($bitacora->ValidarUserAPI()==false) {
-                return array("response"=>false);
+                return array("number"=>0);
             }
 
             $hora_DIR = date("Y-m-d h:i:s");
@@ -52,7 +55,7 @@ $Propietario=[
 
             $Geo = Geolocalizacion::where("Latitud",$args["Latitud"])->where("Longitud",$args["Longitud"])->where("FechaCreado",$hora_DIR)->first();
             if ($Geo == null) {
-                return array("response"=>false);
+                return array("number"=>0);
             }
 
             $dir=new Direccion([
@@ -75,7 +78,7 @@ $Propietario=[
             $New_Direccion = Direccion::where("Zona",$args["Zona"])->where("Barrio",$args["Barrio"])->where("Calle",$args["Calle"])->
             where("Casa",$args["NumCasa"])->where("FechaCreado",$hora_DIR)->first();
             if ($New_Direccion==null) {
-                return array("response"=>false);
+                return array("number"=>0);
             }
 
             $prop=new Propietario([
@@ -94,9 +97,9 @@ $Propietario=[
 
             $New_Propietario = Propietario::where("CI",$args["Numero"])->first();
             if ($New_Propietario==null) {
-                return array("response"=>false);
+                return array("number"=>0);
             }
-            return array("response"=>true);
+            return array("number"=>$New_Propietario->ID);
         }
     ],
     'DeletePropietario'=>[
@@ -119,6 +122,109 @@ $Propietario=[
             Propietario::where('ID', $Propietario->ID)->update([
                 'FechaEliminado'=>date("Y-m-d h:i:s")
             ]);
+            return array("response"=>true);
+        }
+    ],
+    'CreateCan'=>[
+        'type'=>$NumberType,
+        'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
+            'ID'=>Type::nonNull(Type::int()),
+            'Propietario'=>Type::nonNull(Type::int()),
+            'Nombre'=>Type::nonNull(Type::string()),
+            'Raza'=>Type::nonNull(Type::int()),
+            'Tamanho'=>Type::nonNull(Type::string()),
+            'Anho'=>Type::nonNull(Type::int()),
+            'Sexo'=>Type::nonNull(Type::int()),
+            'Color'=>Type::nonNull(Type::int()),
+            'Chip'=>Type::nonNull(Type::int()),
+            'Tatuaje'=>Type::nonNull(Type::int()),
+            'Caracteristica'=>Type::nonNull(Type::string())
+        ],
+        'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("number"=>0);
+            }
+
+            $fecha_actual = date("Y-m-d h:i:s");
+
+            $tam=new Tamanho([
+                'ID'=>NULL,
+                'Tamanho'=>$args["Tamanho"],
+                'FechaCreado'=>$fecha_actual,
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL
+            ]);
+            $x=$tam->save();
+
+            $carac=new Caracteristica([
+                'ID'=>NULL,
+                'Detalle'=>$args["Caracteristica"],
+                'FechaCreado'=>$fecha_actual,
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL
+            ]);
+            $x=$carac->save();
+
+            $New_Carac = Caracteristica::where('FechaCreado',$fecha_actual)->where("Detalle",$args["Caracteristica"])->first();
+            if ($New_Carac==null) {
+                return array("number"=>0);
+            }
+
+            $New_Tam = Tamanho::where("Tamanho",$args["Tamanho"])->first();
+            if ($New_Tam==null) {
+                return array("number"=>0);
+            }
+
+            $can=new Can([
+                'ID'=>NULL,
+                'Nombre'=>$args["Nombre"],
+                'Raza'=>$args["Raza"],
+                'Tamanho'=>$New_Tam->ID,
+                'Meses'=>($args["Anho"] * 12),
+                'Anho'=>$args["Anho"],
+                'Propietario'=>$args["Propietario"],
+                'FechaCreado'=>$fecha_actual,
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL,
+                'Sexo'=>$args["Sexo"],
+                'Color'=>$args["Color"],
+                'Chip'=>$args["Chip"],
+                'Tatuaje'=>$args["Tatuaje"]
+            ]);
+            $x=$can->save();
+
+            $NEW_Can = Can::where('FechaCreado',$fecha_actual)->where("Propietario",$args["Propietario"])->first();
+            if ($NEW_Can==null) {
+                return array("number"=>0);
+            }
+
+            return array("number"=>$NEW_Can->ID);
+        }
+    ],
+    'DeleteCan'=>[
+        'type'=>$ResponseType,
+        'args'=>[
+            'ID_CUENTA'=>Type::nonNull(Type::int()),
+            'ID'=>Type::nonNull(Type::int())
+        ],
+        'resolve'=>function($root,$args){
+            $bitacora = new Bitacora();
+            $bitacora->SetIdUser($args["ID_CUENTA"]);
+            if ($bitacora->ValidarUserAPI()==false) {
+                return array("response"=>false);
+            }
+
+            $Can=Can::find($args["ID"]);
+            if ($Can==null) {
+                return array("response"=>false);
+            }
+            Can::where('ID', $Can->ID)->update([
+                'FechaEliminado'=>date("Y-m-d h:i:s")
+            ]);
+
             return array("response"=>true);
         }
     ],

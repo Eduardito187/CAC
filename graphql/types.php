@@ -41,6 +41,14 @@ $ResponseType=new ObjectType([
     ]
 ]);
 
+$NumberType=new ObjectType([
+    'name' => 'NumberType',
+    'description' => 'NumberType',
+    'fields'=>[
+        'number'=>Type::int()
+    ]
+]);
+
 $validacionLoginType=new ObjectType([
     'name' => 'Validacion_de_Login',
     'description' => 'Se valida el inicio al sistema',

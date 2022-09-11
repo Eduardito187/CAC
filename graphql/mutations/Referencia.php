@@ -5,10 +5,11 @@ use App\Models\PropietarioReferencia;
 use App\Models\Direccion;
 use GraphQL\Type\Definition\Type;
 use App\Helper\Bitacora;
+use App\Models\Geolocalizacion;
 
 $Referencia=[
     'CreateReferencia'=>[
-        'type'=>$ResponseType,
+        'type'=>$NumberType,
         'args'=>[
             'ID_CUENTA'=>Type::nonNull(Type::int()),
             'Nombre'=>Type::nonNull(Type::string()),
@@ -27,13 +28,34 @@ $Referencia=[
             'Provincia'=>Type::nonNull(Type::int()),
             'Municipio'=>Type::nonNull(Type::int()),
             'Uv'=>Type::nonNull(Type::int()),
-            'Canton'=>Type::nonNull(Type::int())
+            'Canton'=>Type::nonNull(Type::int()),
+            'Latitud'=>Type::nonNull(Type::string()),
+            'Longitud'=>Type::nonNull(Type::string()),
+            'Distrito'=>Type::nonNull(Type::string()),
+            'Propietario'=>Type::nonNull(Type::int())
         ],
         'resolve'=>function($root,$args){
             $bitacora = new Bitacora();
             $bitacora->SetIdUser($args["ID_CUENTA"]);
             if ($bitacora->ValidarUserAPI()==false) {
-                return array("response"=>false);
+                return array("number"=>0);
+            }
+
+
+            $hora_DIR = date("Y-m-d h:i:s");
+            $geo = new Geolocalizacion([
+                'ID'=>NULL,
+                'Latitud'=>$args["Latitud"],
+                'Longitud'=>$args["Longitud"],
+                'FechaCreado'=>$hora_DIR,
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL
+            ]);
+            $x=$geo->save();
+
+            $Geo = Geolocalizacion::where("Latitud",$args["Latitud"])->where("Longitud",$args["Longitud"])->where("FechaCreado",$hora_DIR)->first();
+            if ($Geo == null) {
+                return array("number"=>0);
             }
 
             $hora_DIR = date("Y-m-d h:i:s");
@@ -43,7 +65,7 @@ $Referencia=[
                 'Barrio'=>$args["Barrio"],
                 'Calle'=>$args["Calle"],
                 'Casa'=>$args["Casa"],
-                'Geo'=>1,
+                'Geo'=>$Geo->ID,
                 'Municipio'=>$args["Municipio"],
                 'Distrito'=>$args["Distrito"],
                 'Uv'=>$args["Uv"],
@@ -57,7 +79,7 @@ $Referencia=[
             $New_Direccion = Direccion::where("Zona",$args["Zona"])->where("Barrio",$args["Barrio"])->where("Calle",$args["Calle"])->
             where("Casa",$args["Casa"])->where("FechaCreado",$hora_DIR)->first();
             if ($New_Direccion==null) {
-                return array("response"=>false);
+                return array("number"=>0);
             }
 
             $ref=new Referencia([
@@ -76,10 +98,20 @@ $Referencia=[
 
             $New_Referencia = Referencia::where("CI",$args["Numero"])->first();
             if ($New_Referencia==null) {
-                return array("response"=>false);
+                return array("number"=>0);
             }
 
-            return array("response"=>true);
+            $PropietarioReferencia = new PropietarioReferencia([
+                'ID'=>NULL,
+                'Propietario'=>$args["Propietario"],
+                'Referencia'=>$New_Referencia->ID,
+                'FechaCreado'=>$hora_DIR,
+                'FechaActualizado'=>NULL,
+                'FechaEliminado'=>NULL
+            ]);
+            $x=$PropietarioReferencia->save();
+
+            return array("number"=>$New_Referencia->ID);
         }
     ],
     'DeleteReferencia'=>[
