@@ -64,7 +64,7 @@ $Referencia=[
                 'Zona'=>$args["Zona"],
                 'Barrio'=>$args["Barrio"],
                 'Calle'=>$args["Calle"],
-                'Casa'=>$args["Casa"],
+                'Casa'=>$args["NumCasa"],
                 'Geo'=>$Geo->ID,
                 'Municipio'=>$args["Municipio"],
                 'Distrito'=>$args["Distrito"],
@@ -77,7 +77,7 @@ $Referencia=[
             $x=$dir->save();
 
             $New_Direccion = Direccion::where("Zona",$args["Zona"])->where("Barrio",$args["Barrio"])->where("Calle",$args["Calle"])->
-            where("Casa",$args["Casa"])->where("FechaCreado",$hora_DIR)->first();
+            where("Casa",$args["NumCasa"])->where("FechaCreado",$hora_DIR)->first();
             if ($New_Direccion==null) {
                 return array("number"=>0);
             }
