@@ -58,7 +58,6 @@ $Referencia=[
                 return array("number"=>0);
             }
 
-            $hora_DIR = date("Y-m-d h:i:s");
             $dir=new Direccion([
                 'ID'=>NULL,
                 'Zona'=>$args["Zona"],
@@ -67,7 +66,7 @@ $Referencia=[
                 'Casa'=>$args["NumCasa"],
                 'Geo'=>$Geo->ID,
                 'Municipio'=>$args["Municipio"],
-                'Distrito'=>$args["Distrito"],
+                'Distrito'=>NULL,
                 'Uv'=>$args["Uv"],
                 'Canton'=>$args["Canton"],
                 'FechaCreado'=>$hora_DIR,
