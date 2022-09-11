@@ -129,7 +129,6 @@ $Propietario=[
         'type'=>$NumberType,
         'args'=>[
             'ID_CUENTA'=>Type::nonNull(Type::int()),
-            'ID'=>Type::nonNull(Type::int()),
             'Propietario'=>Type::nonNull(Type::int()),
             'Nombre'=>Type::nonNull(Type::string()),
             'Raza'=>Type::nonNull(Type::int()),
