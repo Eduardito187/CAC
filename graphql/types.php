@@ -633,21 +633,93 @@ $DistritoType=new ObjectType([
 $DireccionType=new ObjectType([
     'name'=>'DireccionType',
     'description'=>'DireccionType',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Zona'=>Type::int(),
-        'Barrio'=>Type::int(),
-        'Calle'=>Type::string(),
-        'Casa'=>Type::string(),
-        'Geo'=>Type::int(),
-        'Municipio'=>Type::int(),
-        'Distrito'=>Type::int(),
-        'Uv'=>Type::int(),
-        'Canton'=>Type::int(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
-    ]
+    'fields' => function () use(&$ZonaType,&$BarrioType,&$GeolocalizacionType,&$MunicipioType,&$DistritoType,&$UvType,&$CantonType){
+        return [
+            'ID'=>Type::int(),
+            'Zona' => [
+                "type" => $ZonaType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Direccion::where('ID', $ID)->with(['zora_r'])->first();
+                    if ($data->zora_r==null) {
+                        return null;
+                    }
+                    return $data->zora_r->toArray();
+                }
+            ],
+            'Barrio' => [
+                "type" => $BarrioType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Direccion::where('ID', $ID)->with(['barrio_r'])->first();
+                    if ($data->barrio_r==null) {
+                        return null;
+                    }
+                    return $data->barrio_r->toArray();
+                }
+            ],
+            'Calle'=>Type::string(),
+            'Casa'=>Type::string(),
+            'Geo' => [
+                "type" => $GeolocalizacionType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Direccion::where('ID', $ID)->with(['geo_r'])->first();
+                    if ($data->geo_r==null) {
+                        return null;
+                    }
+                    return $data->geo_r->toArray();
+                }
+            ],
+            'Municipio' => [
+                "type" => $MunicipioType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Direccion::where('ID', $ID)->with(['municipio_r'])->first();
+                    if ($data->municipio_r==null) {
+                        return null;
+                    }
+                    return $data->municipio_r->toArray();
+                }
+            ],
+            'Distrito' => [
+                "type" => $DistritoType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Direccion::where('ID', $ID)->with(['distrito_r'])->first();
+                    if ($data->distrito_r==null) {
+                        return null;
+                    }
+                    return $data->distrito_r->toArray();
+                }
+            ],
+            'Uv' => [
+                "type" => $UvType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Direccion::where('ID', $ID)->with(['uv_r'])->first();
+                    if ($data->uv_r==null) {
+                        return null;
+                    }
+                    return $data->uv_r->toArray();
+                }
+            ],
+            'Canton' => [
+                "type" => $CantonType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Direccion::where('ID', $ID)->with(['canton_r'])->first();
+                    if ($data->canton_r==null) {
+                        return null;
+                    }
+                    return $data->canton_r->toArray();
+                }
+            ],
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string()
+        ];
+    }
 ]);
 $DepartamentoType=new ObjectType([
     'name'=>'DepartamentoType',
