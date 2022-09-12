@@ -394,7 +394,7 @@ $ReferenciaType=new ObjectType([
                 }
             ],
             'Propietarios' => [
-                "type" => $PropietarioReferenciaType,
+                "type" => Type::listOf($PropietarioReferenciaType),
                 "resolve" => function ($root, $args) {
                     $ID = $root['ID'];
                     $data = Referencia::where('ID', $ID)->with(['propietario_referencia_r'])->first();
@@ -477,7 +477,7 @@ $PropietarioType=new ObjectType([
             }
         ],
         'Referencias' => [
-            "type" => $PropietarioReferenciaType,
+            "type" => Type::listOf($PropietarioReferenciaType),
             "resolve" => function ($root, $args) {
                 $ID = $root['ID'];
                 $data = Propietario::where('ID', $ID)->with(['propietario_referencia_r'])->first();
