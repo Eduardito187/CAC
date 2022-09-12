@@ -135,9 +135,9 @@ $Propietario=[
             'Tamanho'=>Type::nonNull(Type::string()),
             'Anho'=>Type::nonNull(Type::int()),
             'Sexo'=>Type::nonNull(Type::int()),
-            'Color'=>Type::nonNull(Type::int()),
-            'Chip'=>Type::nonNull(Type::int()),
-            'Tatuaje'=>Type::nonNull(Type::int()),
+            'Color'=>Type::nonNull(Type::string()),
+            'Chip'=>Type::nonNull(Type::string()),
+            'Tatuaje'=>Type::nonNull(Type::string()),
             'Caracteristica'=>Type::nonNull(Type::string())
         ],
         'resolve'=>function($root,$args){

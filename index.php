@@ -1,29 +1,22 @@
 <?php
 require('vendor/autoload.php');
 use Illuminate\Database\Capsule\Manager as Capsule;
-
-use App\Models\Rango;
-use App\Models\Cuenta;
+use App\Helper\DB;
 $capsule = new Capsule;
 $capsule->addConnection([
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => 'u960392013_cac',
-    'username' => 'u960392013_cac',
-    'password' => 'CACProyecto_Grado123',
-    'charset' => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix' => '',
+    'driver' => DB::DRIVER,
+    'host' => DB::HOST,
+    'database' => DB::DB,
+    'username' => DB::USER,
+    'password' => DB::PASSWORD,
+    'charset' => DB::UTF,
+    'collation' => DB::COLLATION,
+    'prefix' => DB::PREFIX,
 ]);
 
-// Make this Capsule instance available globally via static methods... (optional)
 $capsule->setAsGlobal();
-
-// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 
 $capsule->bootEloquent();
 require('graphql/boot.php');
 
-//$a=Rango::find(1);
-//var_dump($a->cuenta->toArray());
 ?>
