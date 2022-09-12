@@ -364,46 +364,134 @@ $ProvinciaType=new ObjectType([
 $ReferenciaType=new ObjectType([
     'name'=>'ReferenciaType',
     'description'=>'ReferenciaType',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Nombre'=>Type::string(),
-        'Apellido'=>Type::string(),
-        'CI'=>Type::string(),
-        'Telefono'=>Type::string(),
-        'Direccion'=>Type::int(),
-        'TipoDocumento'=>Type::int(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
-    ]
+    'fields' => function () use(&$DireccionType, &$TipoDocumentoType, &$PropietarioReferenciaType){
+        return [
+            'ID'=>Type::int(),
+            'Nombre'=>Type::string(),
+            'Apellido'=>Type::string(),
+            'CI'=>Type::string(),
+            'Telefono'=>Type::string(),
+            'Direccion' => [
+                "type" => $DireccionType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Referencia::where('ID', $ID)->with(['direccion_p'])->first();
+                    if ($data->direccion_p==null) {
+                        return null;
+                    }
+                    return $data->direccion_p->toArray();
+                }
+            ],
+            'TipoDocumento' => [
+                "type" => $TipoDocumentoType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Referencia::where('ID', $ID)->with(['tipo_documento_r'])->first();
+                    if ($data->tipo_documento_r==null) {
+                        return null;
+                    }
+                    return $data->tipo_documento_r->toArray();
+                }
+            ],
+            'Propietarios' => [
+                "type" => $PropietarioReferenciaType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Referencia::where('ID', $ID)->with(['propietario_referencia_r'])->first();
+                    if ($data->propietario_referencia_r==null) {
+                        return null;
+                    }
+                    return $data->propietario_referencia_r->toArray();
+                }
+            ],
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string()
+        ];
+    }
 ]);
 $PropietarioReferenciaType=new ObjectType([
     'name'=>'PropietarioReferenciaType',
     'description'=>'PropietarioReferenciaType',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Propietario'=>Type::int(),
-        'Referencia'=>Type::int(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string()
-    ]
+    'fields' => function () use(&$PropietarioType, &$ReferenciaType){
+        return [
+            'ID'=>Type::int(),
+            'Propietario' => [
+                "type" => $PropietarioType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = PropietarioReferencia::where('ID', $ID)->with(['propietario_r'])->first();
+                    if ($data->propietario_r==null) {
+                        return null;
+                    }
+                    return $data->propietario_r->toArray();
+                }
+            ],
+            'Referencia' => [
+                "type" => $ReferenciaType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = PropietarioReferencia::where('ID', $ID)->with(['referencia_r'])->first();
+                    if ($data->referencia_r==null) {
+                        return null;
+                    }
+                    return $data->referencia_r->toArray();
+                }
+            ],
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string()
+        ];
+    }
 ]);
 $PropietarioType=new ObjectType([
     'name'=>'PropietarioType',
     'description'=>'PropietarioType',
-    'fields'=>[
+    'fields' => function () use(&$DireccionType, &$TipoDocumentoType, &$PropietarioReferenciaType){
+        return [
         'ID'=>Type::int(),
         'Nombre'=>Type::string(),
         'Apellido'=>Type::string(),
         'CI'=>Type::string(),
         'Telefono'=>Type::string(),
-        'Direccion'=>Type::int(),
-        'TipoDocumento'=>Type::int(),
+        'Direccion' => [
+            "type" => $DireccionType,
+            "resolve" => function ($root, $args) {
+                $ID = $root['ID'];
+                $data = Propietario::where('ID', $ID)->with(['direccion_p'])->first();
+                if ($data->direccion_p==null) {
+                    return null;
+                }
+                return $data->direccion_p->toArray();
+            }
+        ],
+        'TipoDocumento' => [
+            "type" => $TipoDocumentoType,
+            "resolve" => function ($root, $args) {
+                $ID = $root['ID'];
+                $data = Propietario::where('ID', $ID)->with(['tipo_documento_r'])->first();
+                if ($data->tipo_documento_r==null) {
+                    return null;
+                }
+                return $data->tipo_documento_r->toArray();
+            }
+        ],
+        'Referencias' => [
+            "type" => $PropietarioReferenciaType,
+            "resolve" => function ($root, $args) {
+                $ID = $root['ID'];
+                $data = Propietario::where('ID', $ID)->with(['propietario_referencia_r'])->first();
+                if ($data->propietario_referencia_r==null) {
+                    return null;
+                }
+                return $data->propietario_referencia_r->toArray();
+            }
+        ],
         'FechaCreado'=>Type::string(),
         'FechaActualizado'=>Type::string(),
         'FechaEliminado'=>Type::string()
-    ]
+        ];
+    }
 ]);
 $PoliciaType=new ObjectType([
     'name' => 'PoliciaType',
