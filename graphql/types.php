@@ -874,4 +874,5 @@ $VacunasCanType=new ObjectType([
         'FechaEliminado'=>Type::string()
     ]
 ]);
+
 ?>
