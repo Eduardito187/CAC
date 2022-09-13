@@ -769,22 +769,64 @@ $CantonType=new ObjectType([
 $CanType=new ObjectType([
     'name'=>'CanType',
     'description'=>'CanType',
-    'fields'=>[
-        'ID'=>Type::int(),
-        'Nombre'=>Type::string(),
-        'Raza'=>Type::int(),
-        'Tamanho'=>Type::int(),
-        'Meses'=>Type::string(),
-        'Anho'=>Type::string(),
-        'Propietario'=>Type::int(),
-        'FechaCreado'=>Type::string(),
-        'FechaActualizado'=>Type::string(),
-        'FechaEliminado'=>Type::string(),
-        'Sexo'=>Type::int(),
-        'Color'=>Type::string(),
-        'Chip'=>Type::int(),
-        'Tatuaje'=>Type::int()
-    ]
+    'fields' => function () use(&$RazaType,&$TamanhoType,&$PropietarioType,&$SexoType){
+        return [
+            'ID'=>Type::int(),
+            'Nombre'=>Type::string(),
+            'Raza' => [
+                "type" => $RazaType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Can::where('ID', $ID)->with(['raza_r'])->first();
+                    if ($data->raza_r==null) {
+                        return null;
+                    }
+                    return $data->raza_r->toArray();
+                }
+            ],
+            'Tamanho' => [
+                "type" => $TamanhoType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Can::where('ID', $ID)->with(['tamanho_r'])->first();
+                    if ($data->tamanho_r==null) {
+                        return null;
+                    }
+                    return $data->tamanho_r->toArray();
+                }
+            ],
+            'Meses'=>Type::string(),
+            'Anho'=>Type::string(),
+            'Propietario' => [
+                "type" => $PropietarioType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Can::where('ID', $ID)->with(['can_p'])->first();
+                    if ($data->can_p==null) {
+                        return null;
+                    }
+                    return $data->can_p->toArray();
+                }
+            ],
+            'FechaCreado'=>Type::string(),
+            'FechaActualizado'=>Type::string(),
+            'FechaEliminado'=>Type::string(),
+            'Sexo' => [
+                "type" => $SexoType,
+                "resolve" => function ($root, $args) {
+                    $ID = $root['ID'];
+                    $data = Can::where('ID', $ID)->with(['Sexo_r'])->first();
+                    if ($data->Sexo_r==null) {
+                        return null;
+                    }
+                    return $data->Sexo_r->toArray();
+                }
+            ],
+            'Color'=>Type::string(),
+            'Chip'=>Type::int(),
+            'Tatuaje'=>Type::int()
+        ];
+    }
 ]);
 $BarrioType=new ObjectType([
     'name'=>'BarrioType',
