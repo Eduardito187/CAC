@@ -148,7 +148,7 @@ $Usuario=[
         'args'=>[
             'ID_CUENTA'=>Type::nonNull(Type::int()),
             'ID'=>Type::nonNull(Type::int()),
-            'Pwd'=>Type::nonNull(Type::boolean())
+            'Pwd'=>Type::nonNull(Type::string())
         ],
         'resolve'=>function($root,$args){
             $bitacora = new Bitacora();
@@ -162,7 +162,7 @@ $Usuario=[
                 return array("response"=>false);
             }
             Usuario::where('ID', $Usuario->ID)->update([
-                'Pwd'=>$args["Pwd"],
+                'Pwd'=>md5($args["Pwd"]),
                 'FechaActualizado'=>date("Y-m-d h:i:s")
             ]);
             return array("response"=>true);
